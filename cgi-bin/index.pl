@@ -30,35 +30,21 @@ if ($cgi->param() && $submit) {
 exit 0;
 
 sub get_db_handler {
-	my %config = do '../config.pl';    
+	my %config = do '../config.pl';
 	my $dbh = DBI->connect("DBI:mysql:database=".$config{db}.";host=".$config{dbserver}."", $config{user}, $config{password})
 	  or die $DBI::errstr;
 	return $dbh;
 }
 
 sub render_html($) {
-    my ($cgi) = @_;
-    print $cgi->start_html(
-        -title => 'Appointments',
-        -bgcolor => 'white');
-
-    print $cgi->start_form(
-        -name => 'main',
-        -method => 'POST',
-    );
-
-    print $cgi->start_table;
-    print $cgi->Tr(
-      $cgi->td(
-        $cgi->textfield(-name => "search", -size => 50)
-      ),
-      $cgi->td($cgi->submit(-name => "submit", -value => 'Search')),
-    );
-
-    print $cgi->end_table;
-    print $cgi->end_form;
-
-    print $cgi->end_html;
+	local $/;
+	my $file = '../resources/main.html';
+	open my $fh, '<', $file
+	or die "can't open $file to read: $!";
+	my $data = <$fh>;
+	close $fh
+	or die "cannot close $file: $!";
+	print $data;
 }
 
 sub render_json($) {
