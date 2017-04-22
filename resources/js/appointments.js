@@ -3,6 +3,19 @@ $(document).ready(function () {
         $(this).validate();
     });
   getAppointments();
+
+  $("#time-field").datetimepicker({
+    datepicker:false,
+    format:'H:i',
+    step:5
+  });
+
+    $("#date-field").datetimepicker({
+      timepicker:false,
+      format:'Y-m-d',
+      minDate:0
+    });
+
 });
 
 $(document).on('click', '#search-btn', function (e) {
@@ -10,13 +23,24 @@ $(document).on('click', '#search-btn', function (e) {
     getAppointments($("#search-field").val())
 });
 
+$(document).on('click', '.add-form-toggler', function (e) {
+  e.preventDefault();
+  $(this).hide();
+  $(".add-form-item").show("slow");
+});
+
+$(document).on('click', '#add-form-cancel', function (e) {
+  e.preventDefault();
+  $(".add-form-item").hide("fast");
+  $(".add-form-toggler").show();
+});
 
 //serializing the form and calling "click" on the search button on document ready would have been a better option.
 //following the requirements, creating getAppointments.
 function getAppointments(search) {
   $.ajax( {
     type: "POST",
-    url: "/cgi-bin/index.pl",
+    url: window.location.pathname,
     data: {"search": search, "ajax": true},
     success: templateAppointments
   });

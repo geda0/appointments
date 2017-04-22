@@ -1,3 +1,13 @@
 td {
   text-align: center;
 }
+
+.error-div {
+    color: red;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.add-form-item {
+  display: none;
+}

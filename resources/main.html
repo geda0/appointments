@@ -1,16 +1,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
 	<head>
+		<link rel="stylesheet" type="text/css" href="/resources/css/jquery.datetimepicker.css">
 		<link rel="stylesheet" type="text/css" href="/resources/css/style.css">
 		<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/resources/js/jquery.tmpl.min.js"></script>
 		<script type="text/javascript" src="/resources/js/jquery.tmplPlus.min.js"></script>
 		<script type="text/javascript" src="/resources/js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="/resources/js/jquery.datetimepicker.full.min.js"></script>
 		<script type="text/javascript" src="/resources/js/appointments.js"></script>
 		<title>Appointments</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	</head>
 	<body bgcolor="white">
-		<form method="post" action="/cgi-bin/index.pl" enctype="multipart/form-data" name="main">
+		<!--ERROR_HOLDER-->
+		<div id="add-form-container">
+			<form method="post" action="" enctype="multipart/form-data" name="add">
+				<input type="button" id="new" class="add-form-toggler" value="NEW">
+				<input class="add-form-item" type="submit" name="submit" value="ADD">
+				<input type="button" class="add-form-item" id="add-form-cancel" value="CANCEL">
+				
+				<table class="add-form-item">
+					<tbody>
+						<tr>
+							<td><label for="date">DATE</label></td>
+							<td><input type="text" name="date" id="date-field" size="50"></td>
+						</tr>
+						<tr>
+							<td><label for="time">TIME</label></td>
+							<td><input type="text" name="time" id="time-field" size="50"></td>
+						</tr>
+						<tr>
+							<td><label for="desc">DESC</label></td>
+							<td><textarea name="desc" rows="4" cols="40"></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>	
+		</div>
+		<form method="post" enctype="multipart/form-data" name="main">
 			<table>
 				<tbody>
 					<tr>
