@@ -12,9 +12,9 @@ sub get_db_handler;
 
 # read the CGI params
 my $cgi = CGI->new;
-my $submit = $cgi->param("submit");
+my $ajax = $cgi->param("ajax");
 
-if ($cgi->param() && $submit) {
+if ($cgi->param() && $ajax) {
 	my $search = $cgi->param("search");
 	print $cgi->header(-type => "application/json", -charset => "utf-8");
 	render_json($search);

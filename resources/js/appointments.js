@@ -2,19 +2,25 @@ $(document).ready(function () {
   $("form").each(function(){
         $(this).validate();
     });
+  getAppointments();
 });
 
-$(document).on('submit', 'form', function (e) {
-    $this = $(this);
+$(document).on('click', '#search-btn', function (e) {
     e.preventDefault();
-    $.ajax( {
-      type: "POST",
-      url: $this.attr( 'action' ),
-      data: $this.serialize(),
-      success: templateAppointments
-    } );
-
+    getAppointments($("#search-field").val())
 });
+
+
+//serializing the form and calling "click" on the search button on document ready would have been a better option.
+//following the requirements, creating getAppointments.
+function getAppointments(search) {
+  $.ajax( {
+    type: "POST",
+    url: "/cgi-bin/index.pl",
+    data: {"search": search, "ajax": true},
+    success: templateAppointments
+  });
+}
 
 /**
 * using jQuery template plugin to populate the Appointments
