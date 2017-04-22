@@ -1,8 +1,45 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
-<title>Appointments</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-</head>
-<body bgcolor="white">
-<form method="post" action="/cgi-bin/index.pl" enctype="multipart/form-data" name="main"><table><tbody><tr><td><input type="text" name="search" size="50"></td> <td><input type="submit" name="submit" value="Search"></td></tr></tbody></table></form>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+	<head>
+		<link rel="stylesheet" type="text/css" href="/resources/css/style.css">
+		<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/resources/js/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="/resources/js/jquery.tmplPlus.min.js"></script>
+		<script type="text/javascript" src="/resources/js/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="/resources/js/appointments.js"></script>
+		<title>Appointments</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	</head>
+	<body bgcolor="white">
+		<form method="post" action="/cgi-bin/index.pl" enctype="multipart/form-data" name="main">
+			<table>
+				<tbody>
+					<tr>
+						<td><input type="text" name="search" size="50"></td>
+						<td><input type="hidden" name="submit" value="search"><input type="submit" value="Search"></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 
-</body></html>
+		<table width="50%">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody id="app-table">
+			</tbody>
+		</table>
+
+		<script type="text/javascript">
+			var markup = '<tr>\
+				<td>${date}</td>\
+				<td>${time}</td>\
+				<td>${description}</td>\
+			</tr>';
+      		$.template( "appointmentTemplate", markup );
+		</script>
+	</body>
+</html>
