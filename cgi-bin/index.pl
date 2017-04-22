@@ -1,22 +1,23 @@
 #!/usr/bin/perl
 
 use CGI;
+use CGI::Carp 'fatalsToBrowser';#for perl beginners like me...
 use DBI;
+use JSON::XS;
 use strict;
 use warnings;
-
 sub render_html($);
 sub render_json($);
+sub get_db_handler;
 
 # read the CGI params
 my $cgi = CGI->new;
-my $search = $cgi->param("search");
+my $submit = $cgi->param("submit");
 
-
-if ($cgi->param() && $search) {#get params
+if ($cgi->param() && $submit) {
+	my $search = $cgi->param("search");
 	print $cgi->header(-type => "application/json", -charset => "utf-8");
-	# print $search
-	render_json($cgi);
+	render_json($search);
 } else {
 	#if POST params
 	##validate
@@ -27,6 +28,13 @@ if ($cgi->param() && $search) {#get params
 }
 
 exit 0;
+
+sub get_db_handler {
+	my %config = do '../config.pl';    
+	my $dbh = DBI->connect("DBI:mysql:database=".$config{db}.";host=".$config{dbserver}."", $config{user}, $config{password})
+	  or die $DBI::errstr;
+	return $dbh;
+}
 
 sub render_html($) {
     my ($cgi) = @_;
@@ -44,7 +52,7 @@ sub render_html($) {
       $cgi->td(
         $cgi->textfield(-name => "search", -size => 50)
       ),
-      $cgi->td($cgi->submit(-value => 'Search')),
+      $cgi->td($cgi->submit(-name => "submit", -value => 'Search')),
     );
 
     print $cgi->end_table;
@@ -54,15 +62,10 @@ sub render_html($) {
 }
 
 sub render_json($) {
-	# connect to the database ## to be used later
-	my $dbh = DBI->connect("DBI:mysql:database=appointments;host=localhost;port=",  
-	  "root", "1331") 
-	  or die $DBI::errstr;
+
+	my $dbh = get_db_handler();
 	 
-	my $statement = qq{SELECT * FROM appointments WHERE description LIKE "%?%"};
-	my $sth = $dbh->prepare($statement)
-	  or die $dbh->errstr;
-	$sth->execute($search)
-	  or die $sth->errstr;
-	my ($appointment) = $sth->fetchrow_array;
+	# @TODO replace all spaces with % in $search
+	my $rowsref = $dbh->selectall_hashref("SELECT `id`, `datetime`, `description` FROM `appointments` WHERE description LIKE \"%".$_[0]."%\"", q/id/);
+	print JSON::XS::encode_json($rowsref);
 }
